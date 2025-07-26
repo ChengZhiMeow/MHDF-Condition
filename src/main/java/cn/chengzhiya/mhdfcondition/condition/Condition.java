@@ -24,6 +24,26 @@ public abstract class Condition {
                     continue;
                 }
 
+                if (val instanceof String string && field.getType() != String.class) {
+                    if (field.getType() == int.class || field.getType() == Integer.class) {
+                        val = Integer.parseInt(string);
+                    } else if (field.getType() == short.class || field.getType() == Short.class) {
+                        val = Short.parseShort(string);
+                    } else if (field.getType() == long.class || field.getType() == Long.class) {
+                        val = Long.parseLong(string);
+                    } else if (field.getType() == double.class || field.getType() == Double.class) {
+                        val = Double.parseDouble(string);
+                    } else if (field.getType() == float.class || field.getType() == Float.class) {
+                        val = Float.parseFloat(string);
+                    } else if (field.getType() == boolean.class || field.getType() == Boolean.class) {
+                        val = Boolean.parseBoolean(string);
+                    } else if (field.getType() == byte.class || field.getType() == Byte.class) {
+                        val = Byte.parseByte(string);
+                    } else if (field.getType() == char.class || field.getType() == Character.class) {
+                        val = string.charAt(0);
+                    }
+                }
+
                 value = val;
             }
 
