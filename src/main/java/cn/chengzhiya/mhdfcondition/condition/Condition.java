@@ -19,7 +19,12 @@ public abstract class Condition {
 
             Object value = null;
             for (String key : annotation.keys()) {
-                value = pramHashMap.get(key);
+                Object val = pramHashMap.get(key);
+                if (val == null) {
+                    continue;
+                }
+
+                value = val;
             }
 
             if (value == null && annotation.required()) {
