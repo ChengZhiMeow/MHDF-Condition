@@ -3,6 +3,7 @@ package cn.chengzhiya.mhdfcondition.condition;
 import lombok.SneakyThrows;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.Map;
 
 public abstract class Condition {
@@ -22,7 +23,7 @@ public abstract class Condition {
             }
 
             if (value == null && annotation.required()) {
-                throw new IllegalArgumentException("在调用 " + this.getClass().getPackage() + "下的" + this.getClass().getName() + " 条件时,找不到变量 " + field.getName() + " 的对应参数");
+                throw new IllegalArgumentException("在调用 " + this.getClass().getName() + " 条件时,找不到变量 " + field.getName() + " 的对应参数, 参数数据如下: " + pramHashMap + ",但所需参数名如下: " + Arrays.toString(annotation.keys()));
             }
 
             field.set(this, value);
