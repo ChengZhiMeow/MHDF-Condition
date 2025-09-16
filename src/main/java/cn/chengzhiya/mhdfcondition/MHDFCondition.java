@@ -20,15 +20,11 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Getter
 public final class MHDFCondition {
-    public static MHDFCondition instance;
-
     private final JavaPlugin plugin;
     @Getter(AccessLevel.PRIVATE)
     private final ConcurrentHashMap<String, Class<? extends Condition>> conditionHashMap = new ConcurrentHashMap<>();
 
     public MHDFCondition(JavaPlugin plugin) {
-        instance = this;
-
         this.plugin = plugin;
         this.registerDefaultCondition();
     }
