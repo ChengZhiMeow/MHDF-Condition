@@ -20,6 +20,6 @@ public final class ConditionIllegalArgumentException extends Exception {
         NOT_FOUND
     }
 
-    public record ErrorKey(ArgumentKey key, ErrorCaused caused) {
+    public record ErrorKey(ArgumentKey key, ErrorCaused caused, Exception e) {
     }
 }

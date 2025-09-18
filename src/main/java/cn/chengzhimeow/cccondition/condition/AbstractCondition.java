@@ -67,19 +67,19 @@ public abstract class AbstractCondition {
                 notFound = false;
                 try {
                     if (castManager == null) {
-                        errors.add(new ConditionIllegalArgumentException.ErrorKey(annotation, ConditionIllegalArgumentException.ErrorCaused.NO_CAST_IMPLEMENTATION));
+                        errors.add(new ConditionIllegalArgumentException.ErrorKey(annotation, ConditionIllegalArgumentException.ErrorCaused.NO_CAST_IMPLEMENTATION, null));
                         continue;
                     }
 
                     castManager.cast(value, type);
                 } catch (NumberFormatException | IndexOutOfBoundsException | ClassCastException | CastException e) {
-                    errors.add(new ConditionIllegalArgumentException.ErrorKey(annotation, ConditionIllegalArgumentException.ErrorCaused.CAST_ERROR));
+                    errors.add(new ConditionIllegalArgumentException.ErrorKey(annotation, ConditionIllegalArgumentException.ErrorCaused.CAST_ERROR, e));
                 }
                 break;
             }
 
             if (notFound)
-                errors.add(new ConditionIllegalArgumentException.ErrorKey(annotation, ConditionIllegalArgumentException.ErrorCaused.NOT_FOUND));
+                errors.add(new ConditionIllegalArgumentException.ErrorKey(annotation, ConditionIllegalArgumentException.ErrorCaused.NOT_FOUND, null));
         }
 
         if (errors.isEmpty()) return;
