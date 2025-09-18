@@ -12,20 +12,20 @@ import java.util.*;
 
 public abstract class AbstractCondition {
     protected final CCCondition ccCondition;
-    protected final Map<String, Object> prams;
+    protected final Map<String, Object> params;
 
-    public AbstractCondition(CCCondition ccCondition, Map<String, Object> prams) {
+    public AbstractCondition(CCCondition ccCondition, Map<String, Object> params) {
         this.ccCondition = ccCondition;
 
-        Map<String, Object> finalPrams = new HashMap<>();
-        for (Map.Entry<String, Object> entry : prams.entrySet()) {
+        Map<String, Object> finalparams = new HashMap<>();
+        for (Map.Entry<String, Object> entry : params.entrySet()) {
             Object value = entry.getValue();
 
             List<PreProcessManager> list = ccCondition.getPreProcessRegistry().getOrDefault(value.getClass(), new ArrayList<>());
             for (PreProcessManager pp : list) value = pp.handle(this, ccCondition);
-            finalPrams.put(entry.getKey(), value);
+            finalparams.put(entry.getKey(), value);
         }
-        this.prams = finalPrams;
+        this.params = finalparams;
     }
 
     /**
@@ -37,7 +37,7 @@ public abstract class AbstractCondition {
      */
     @SneakyThrows
     public final <T> T getPram(String key, Class<T> type) {
-        Object value = this.prams.get(key);
+        Object value = this.params.get(key);
         if (value == null) return null;
 
         CastManager castManager = this.ccCondition.getCastRegistry().get(type);
@@ -61,7 +61,7 @@ public abstract class AbstractCondition {
             Class<?> type = field.getType();
             CastManager castManager = this.ccCondition.getCastRegistry().get(type);
             for (String key : annotation.keys()) {
-                Object value = this.prams.get(key);
+                Object value = this.params.get(key);
                 if (value == null) continue;
 
                 notFound = false;
@@ -101,7 +101,7 @@ public abstract class AbstractCondition {
             Class<?> type = field.getType();
             CastManager castManager = this.ccCondition.getCastRegistry().get(type);
             for (String key : annotation.keys()) {
-                Object value = this.prams.get(key);
+                Object value = this.params.get(key);
                 if (value == null) continue;
 
                 v = castManager.cast(value, type);

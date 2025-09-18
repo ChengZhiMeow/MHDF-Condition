@@ -13,8 +13,8 @@ public final class EqualsImpl extends AbstractCondition {
     @ArgumentKey(keys = {"value", "v"})
     private String value;
 
-    public EqualsImpl(CCCondition ccCondition, Map<String, Object> prams) {
-        super(ccCondition, prams);
+    public EqualsImpl(CCCondition ccCondition, Map<String, Object> params) {
+        super(ccCondition, params);
     }
 
     @Override

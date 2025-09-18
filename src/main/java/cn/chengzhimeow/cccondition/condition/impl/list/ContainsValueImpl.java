@@ -14,8 +14,8 @@ public final class ContainsValueImpl extends AbstractCondition {
     @ArgumentKey(keys = {"value", "v"})
     private Object value;
 
-    public ContainsValueImpl(CCCondition ccCondition, Map<String, Object> prams) {
-        super(ccCondition, prams);
+    public ContainsValueImpl(CCCondition ccCondition, Map<String, Object> params) {
+        super(ccCondition, params);
     }
 
     @Override

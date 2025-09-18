@@ -14,8 +14,8 @@ public final class PermissionImpl extends AbstractCondition {
     @ArgumentKey(keys = {"permission", "perm"})
     private String permission;
 
-    public PermissionImpl(CCCondition ccCondition, Map<String, Object> prams) {
-        super(ccCondition, prams);
+    public PermissionImpl(CCCondition ccCondition, Map<String, Object> params) {
+        super(ccCondition, params);
     }
 
     @Override

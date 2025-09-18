@@ -13,8 +13,8 @@ public final class GreaterThanImpl extends AbstractCondition {
     @ArgumentKey(keys = {"value2", "v2"})
     private double value2;
 
-    public GreaterThanImpl(CCCondition ccCondition, Map<String, Object> prams) {
-        super(ccCondition, prams);
+    public GreaterThanImpl(CCCondition ccCondition, Map<String, Object> params) {
+        super(ccCondition, params);
     }
 
     @Override

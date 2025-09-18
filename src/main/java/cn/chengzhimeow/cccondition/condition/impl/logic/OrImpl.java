@@ -11,8 +11,8 @@ public final class OrImpl extends AbstractCondition {
     @ArgumentKey(keys = {"conditionList", "conditions"})
     private List<AbstractCondition> conditionList;
 
-    public OrImpl(CCCondition ccCondition, Map<String, Object> prams) {
-        super(ccCondition, prams);
+    public OrImpl(CCCondition ccCondition, Map<String, Object> params) {
+        super(ccCondition, params);
     }
 
     @Override
