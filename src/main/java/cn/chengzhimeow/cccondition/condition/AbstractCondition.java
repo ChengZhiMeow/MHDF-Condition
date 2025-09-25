@@ -51,6 +51,13 @@ public abstract class AbstractCondition {
     public final void check() throws ConditionIllegalArgumentException {
         List<ConditionIllegalArgumentException.ErrorKey> errors = new ArrayList<>();
 
+        boolean disableCheck = false;
+        try {
+            CastManager boolCast = this.ccCondition.getCastRegistry().get(Boolean.class);
+            disableCheck = (boolean) boolCast.cast(this.params.getOrDefault("disabled_check", false), Boolean.class);
+        } catch (CastException ignored) {}
+        if (disableCheck) return;
+
         for (Field field : this.getClass().getDeclaredFields()) {
             field.setAccessible(true);
 
