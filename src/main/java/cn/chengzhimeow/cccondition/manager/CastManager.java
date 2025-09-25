@@ -6,6 +6,7 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.permissions.Permissible;
 
 import java.util.UUID;
 
@@ -135,6 +136,14 @@ public interface CastManager {
             if (value instanceof OfflinePlayer) return value;
             else if (value instanceof String s) return Bukkit.getOfflinePlayer(s);
             else if (value instanceof UUID u) return Bukkit.getOfflinePlayer(u);
+            else throw new CastException(value, type);
+        }
+    }
+
+    class PermissibleManager implements CastManager {
+        @Override
+        public Object cast(Object value, Class<?> type) throws CastException {
+            if (value instanceof Permissible) return value;
             else throw new CastException(value, type);
         }
     }

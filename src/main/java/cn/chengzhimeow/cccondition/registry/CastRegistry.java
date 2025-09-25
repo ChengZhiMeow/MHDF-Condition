@@ -5,6 +5,7 @@ import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.permissions.Permissible;
 
 import java.util.Map;
 
@@ -45,6 +46,7 @@ public final class CastRegistry extends Registry<Class<?>, CastManager> {
         map.put(BossBar.Overlay.class, new CastManager.BossBarOverlayCastManager());
 
         map.put(Player.class, new CastManager.PlayerCastManager());
+        map.put(Permissible.class, new CastManager.PermissibleManager());
         map.put(OfflinePlayer.class, new CastManager.OfflinePlayerCastManager());
 
         return map;
