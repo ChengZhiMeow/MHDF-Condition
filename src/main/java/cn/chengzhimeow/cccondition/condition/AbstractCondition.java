@@ -86,7 +86,7 @@ public abstract class AbstractCondition {
                 break;
             }
 
-            if (notFound)
+            if (notFound && annotation.required())
                 errors.add(new ConditionIllegalArgumentException.ErrorKey(annotation, ConditionIllegalArgumentException.ErrorCaused.NOT_FOUND, null));
         }
 
