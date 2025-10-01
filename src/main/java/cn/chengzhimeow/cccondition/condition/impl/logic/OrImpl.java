@@ -18,6 +18,10 @@ public final class OrImpl extends AbstractCondition {
     @Override
     public boolean onCheck() {
         for (AbstractCondition condition : this.conditionList) {
+            // 继承参数
+            for (Map.Entry<String, Object> entry : this.getParams().entrySet()) {
+                condition.getParams().putIfAbsent(entry.getKey(), entry.getValue());
+            }
             if (condition.checkCondition()) {
                 return true;
             }

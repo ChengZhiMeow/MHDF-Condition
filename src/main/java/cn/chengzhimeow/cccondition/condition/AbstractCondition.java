@@ -5,6 +5,7 @@ import cn.chengzhimeow.cccondition.exception.CastException;
 import cn.chengzhimeow.cccondition.exception.ConditionIllegalArgumentException;
 import cn.chengzhimeow.cccondition.manager.CastManager;
 import cn.chengzhimeow.cccondition.manager.PreProcessManager;
+import lombok.Getter;
 import lombok.SneakyThrows;
 
 import java.lang.reflect.Field;
@@ -12,6 +13,7 @@ import java.util.*;
 
 public abstract class AbstractCondition {
     protected final CCCondition ccCondition;
+    @Getter
     protected final Map<String, Object> params;
 
     public AbstractCondition(CCCondition ccCondition, Map<String, Object> params) {
@@ -36,7 +38,7 @@ public abstract class AbstractCondition {
      * @return 参数值
      */
     @SneakyThrows
-    public final <T> T getPram(String key, Class<T> type) {
+    public final <T> T getParam(String key, Class<T> type) {
         Object value = this.params.get(key);
         if (value == null) return null;
 
@@ -55,7 +57,8 @@ public abstract class AbstractCondition {
         try {
             CastManager boolCast = this.ccCondition.getCastRegistry().get(Boolean.class);
             disableCheck = (boolean) boolCast.cast(this.params.getOrDefault("disabled_check", false), Boolean.class);
-        } catch (CastException ignored) {}
+        } catch (CastException ignored) {
+        }
         if (disableCheck) return;
 
         for (Field field : this.getClass().getDeclaredFields()) {

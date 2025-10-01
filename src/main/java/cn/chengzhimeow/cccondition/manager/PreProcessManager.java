@@ -11,9 +11,9 @@ public interface PreProcessManager {
         @Override
         public Object handle(AbstractCondition condition, Object value) {
             return PlaceholderAPI.setPlaceholders(
-                    condition.getPram("placeholder_owner", OfflinePlayer.class),
-                            (String) value
-                    );
+                    condition.getParam("placeholder_owner", OfflinePlayer.class),
+                    (String) value
+            );
         }
     }
 }
