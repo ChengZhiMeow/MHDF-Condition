@@ -19,15 +19,14 @@ public abstract class AbstractCondition {
     public AbstractCondition(CCCondition ccCondition, Map<String, Object> params) {
         this.ccCondition = ccCondition;
 
-        Map<String, Object> finalParams = new HashMap<>();
+        this.params = params;
         for (Map.Entry<String, Object> entry : params.entrySet()) {
             Object value = entry.getValue();
 
             List<PreProcessManager> list = ccCondition.getPreProcessRegistry().getOrDefault(value.getClass(), new ArrayList<>());
             for (PreProcessManager pp : list) value = pp.handle(this, ccCondition);
-            finalParams.put(entry.getKey(), value);
+            params.put(entry.getKey(), value);
         }
-        this.params = finalParams;
     }
 
     /**
