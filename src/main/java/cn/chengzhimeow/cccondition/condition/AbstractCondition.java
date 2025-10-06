@@ -19,13 +19,13 @@ public abstract class AbstractCondition {
     public AbstractCondition(CCCondition ccCondition, Map<String, Object> params) {
         this.ccCondition = ccCondition;
 
-        this.params = params;
+        this.params = new HashMap<>(params);
         for (Map.Entry<String, Object> entry : params.entrySet()) {
             Object value = entry.getValue();
 
             List<PreProcessManager> list = ccCondition.getPreProcessRegistry().getOrDefault(value.getClass(), new ArrayList<>());
-            for (PreProcessManager pp : list) value = pp.handle(this, ccCondition);
-            params.put(entry.getKey(), value);
+            for (PreProcessManager pp : list) value = pp.handle(ccCondition, this, value);
+            this.params.put(entry.getKey(), value);
         }
     }
 
@@ -41,9 +41,11 @@ public abstract class AbstractCondition {
         Object value = this.params.get(key);
         if (value == null) return null;
 
+        if (type.isInstance(value)) return type.cast(value);
+
         CastManager castManager = this.ccCondition.getCastRegistry().get(type);
         // noinspection unchecked
-        return (T) castManager.cast(value, type);
+        return (T) castManager.cast(this.ccCondition, value, type);
     }
 
     /**
@@ -55,7 +57,7 @@ public abstract class AbstractCondition {
         boolean disableCheck = false;
         try {
             CastManager boolCast = this.ccCondition.getCastRegistry().get(Boolean.class);
-            disableCheck = (boolean) boolCast.cast(this.params.getOrDefault("disabled_check", false), Boolean.class);
+            disableCheck = (boolean) boolCast.cast(this.ccCondition, this.params.getOrDefault("disabled_check", false), Boolean.class);
         } catch (CastException ignored) {
         }
         if (disableCheck) return;
@@ -73,15 +75,17 @@ public abstract class AbstractCondition {
             for (String key : annotation.keys()) {
                 Object value = this.params.get(key);
                 if (value == null) continue;
-
                 notFound = false;
+
+                if (type.isInstance(value)) break;
+
                 try {
                     if (castManager == null) {
                         errors.add(new ConditionIllegalArgumentException.ErrorKey(annotation, ConditionIllegalArgumentException.ErrorCaused.NO_CAST_IMPLEMENTATION, null));
                         continue;
                     }
 
-                    castManager.cast(value, type);
+                    castManager.cast(this.ccCondition, value, type);
                 } catch (NumberFormatException | IndexOutOfBoundsException | ClassCastException | CastException e) {
                     errors.add(new ConditionIllegalArgumentException.ErrorKey(annotation, ConditionIllegalArgumentException.ErrorCaused.CAST_ERROR, e));
                 }
@@ -113,8 +117,12 @@ public abstract class AbstractCondition {
             for (String key : annotation.keys()) {
                 Object value = this.params.get(key);
                 if (value == null) continue;
+                if (type.isInstance(value)) {
+                    v = value;
+                    break;
+                }
 
-                v = castManager.cast(value, type);
+                v = castManager.cast(this.ccCondition, value, type);
                 break;
             }
 

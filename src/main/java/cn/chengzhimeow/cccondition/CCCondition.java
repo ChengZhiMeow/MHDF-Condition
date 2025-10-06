@@ -1,6 +1,7 @@
 package cn.chengzhimeow.cccondition;
 
 import cn.chengzhimeow.cccondition.condition.AbstractCondition;
+import cn.chengzhimeow.cccondition.condition.ConditionBuilder;
 import cn.chengzhimeow.cccondition.registry.CastRegistry;
 import cn.chengzhimeow.cccondition.registry.ConditionRegistry;
 import cn.chengzhimeow.cccondition.registry.PreProcessRegistry;
@@ -33,11 +34,11 @@ public final class CCCondition {
      * @return 条件实例
      */
     @SneakyThrows
-    public AbstractCondition getCondition(String id, Map<String, Object> map) {
+    public ConditionBuilder.Builder getCondition(String id, Map<String, Object> map) {
         Constructor<? extends AbstractCondition> constructor = this.conditionRegistry.get(id);
-        if (constructor == null) {
-            throw new IllegalArgumentException("Cannot find the condition with id " + id);
-        }
-        return constructor.newInstance(this, map);
+        if (constructor == null) throw new IllegalArgumentException("Cannot find the condition with id " + id);
+        return ConditionBuilder.builder(this)
+                .condition(constructor)
+                .params(map);
     }
 }
